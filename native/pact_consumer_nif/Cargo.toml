@@ -1,0 +1,18 @@
+[package]
+name = "pact_consumer_nif"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "pact_consumer_nif"
+crate-type = ["cdylib"]
+
+[dependencies]
+rustler = { workspace = true }
+pact_consumer = { workspace = true }
+pact_models = { workspace = true }
+serde_json = { workspace = true }
+futures.workspace = true
+log = "0.4.27"
+env_logger = "0.11.8"
+regex = { workspace = true }

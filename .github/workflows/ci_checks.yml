@@ -1,0 +1,46 @@
+name: CI Checks
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  rust:
+    name: Rust Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          components: rustfmt, clippy
+      - name: Cargo Check
+        run: cargo check --all-targets --all-features
+      - name: Rustfmt Check
+        run: cargo fmt --all -- --check
+      - name: Clippy Lint
+        run: cargo clippy --all --all-features -- -D warnings
+
+  elixir:
+    name: Elixir Quality Checks
+    runs-on: ubuntu-latest
+    env:
+      MIX_ENV: test
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: 1.15
+          otp-version: 25
+      - name: Install dependencies
+        run: mix deps.get
+      - name: Format Check
+        run: mix format --check-formatted
+      - name: Credo Lint
+        run: mix credo --strict
+      - name: Dialyzer Analysis
+        run: mix dialyzer --halt-exit-status
+

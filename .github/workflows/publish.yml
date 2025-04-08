@@ -1,0 +1,28 @@
+name: Publish Hex Package
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    name: Publish to Hex.pm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: 1.18
+          otp-version: 27
+
+      - name: Publish Package
+        uses: synchronal/hex-publish-action@main
+        with:
+          key: ${{ secrets.HEX_API_KEY }}
+          name: pact_consumer_ex
+          tag-release: 'false'
+

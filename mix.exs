@@ -18,7 +18,14 @@ defmodule PactElixir.MixProject do
       name: "pact_consumer_ex",
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/valerio-iachini/pact_consumer_ex"},
-      maintainers: ["Valerio Iachini"]
+      maintainers: ["Valerio Iachini"],
+      files: [
+        "lib",
+        "native",
+        "mix.exs",
+        "README.md",
+        "LICENSE"
+      ]
     ]
   end
 
@@ -28,7 +35,8 @@ defmodule PactElixir.MixProject do
       {:jason, "~> 1.4.4"},
       {:httpoison, "~> 2.2.2", only: [:test]},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.4", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 end

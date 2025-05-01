@@ -1,7 +1,6 @@
 defmodule Pact.Native.Builders.RequestBuilder do
-  @moduledoc """
-  Wraps native rust functions to construct sync requests.
-  """
+  @moduledoc false
+
   alias Pact.Native.PactConsumer.HttpRequest
   alias Pact.Native.PactConsumer.Request
 

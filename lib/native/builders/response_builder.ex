@@ -1,7 +1,6 @@
 defmodule Pact.Native.Builders.ResponseBuilder do
-  @moduledoc """
-  Wraps native Rust functions to construct sync responses.
-  """
+  @moduledoc false
+
   alias Pact.Native.PactConsumer.HttpResponse
   alias Pact.Native.PactConsumer.Response
 

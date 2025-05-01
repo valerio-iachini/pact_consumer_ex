@@ -1,7 +1,6 @@
 defmodule Pact.Native.Models.Request do
-  @moduledoc """
-  Wraps native rust interaction.
-  """
+  @moduledoc false
+
   defmacro __using__(_opts) do
     quote do
       defmodule Request do

@@ -1,7 +1,6 @@
 defmodule Pact.Native.MockServer do
-  @moduledoc """
-  wraps native rust functions to start mock servers.
-  """
+  @moduledoc false
+
   alias Pact.Native.PactConsumer.PactBuilder
 
   defmacro __using__(_opts) do

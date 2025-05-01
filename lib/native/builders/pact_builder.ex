@@ -1,7 +1,6 @@
 defmodule Pact.Native.Builders.PactBuilder do
-  @moduledoc """
-  Wraps native rust functions to construct pact builders.
-  """
+  @moduledoc false
+
   alias Pact.Native.PactConsumer.Interaction
   alias Pact.Native.PactConsumer.AsynchronousMessage
 

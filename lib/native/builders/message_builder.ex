@@ -1,7 +1,6 @@
 defmodule Pact.Native.Builders.MessageBuilder do
-  @moduledoc """
-  Provides Elixir bindings for constructing Async Message interactions.
-  """
+  @moduledoc false
+
   alias Pact.Patterns.JsonPattern
   alias Pact.Native.PactConsumer.Interaction
 

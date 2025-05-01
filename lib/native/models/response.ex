@@ -1,12 +1,11 @@
 defmodule Pact.Native.Models.Response do
-  @moduledoc """
-  Wraps native rust interaction.
-  """
+  @moduledoc false
+
   defmacro __using__(_opts) do
     quote do
       defmodule Response do
         @moduledoc """
-        Response 
+        Response
         """
         @enforce_keys [:inner]
         defstruct [:inner]

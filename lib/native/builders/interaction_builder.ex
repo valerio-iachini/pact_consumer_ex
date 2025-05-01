@@ -1,7 +1,6 @@
 defmodule Pact.Native.Builders.InteractionBuilder do
-  @moduledoc """
-  Wraps native Rust functions to construct Pact interactions.
-  """
+  @moduledoc false
+
   alias Pact.Native.PactConsumer.Interaction
 
   defmacro __using__(_opts) do

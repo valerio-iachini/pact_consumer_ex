@@ -1,7 +1,6 @@
 defmodule Pact.Native.Models.V4.HttpParts do
-  @moduledoc """
-  Wraps native rust http parts.
-  """
+  @moduledoc false
+
   defmacro __using__(_opts) do
     quote do
       defmodule HttpRequest do
@@ -18,7 +17,7 @@ defmodule Pact.Native.Models.V4.HttpParts do
 
       defmodule HttpResponse do
         @moduledoc """
-        Http Response 
+        Http Response
         """
         @enforce_keys [:inner]
         defstruct [:inner]

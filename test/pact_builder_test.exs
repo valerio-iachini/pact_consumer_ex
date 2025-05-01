@@ -10,6 +10,9 @@ defmodule Pact.Builders.PactBuilderTest do
 
   use ExUnit.Case
 
+  doctest Pact.Patterns.JsonPattern
+  doctest Pact.Patterns.StringPattern
+
   test "a_service_consumer_side_of_a_pact_goes_a_little_something_like_this" do
     {:ok, service} =
       PactBuilder.new("Consumer", "Alice Service")

@@ -1,7 +1,6 @@
 defmodule Pact.Native.Models.V4.AsyncMessage do
-  @moduledoc """
-  Wraps native rust functions for async messages.
-  """
+  @moduledoc false
+
   defmacro __using__(_opts) do
     quote do
       defmodule AsynchronousMessage do

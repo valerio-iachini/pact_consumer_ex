@@ -1,7 +1,6 @@
 defmodule Pact.Native.PactConsumer do
-  @moduledoc """
-  Provides Elixir bindings to the native Rust implementation of Pact.
-  """
+  @moduledoc false
+
   use Rustler, otp_app: :pact_consumer_ex, crate: "pact_consumer_nif"
 
   use Pact.Native.Builders.InteractionBuilder

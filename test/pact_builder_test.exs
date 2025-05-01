@@ -5,13 +5,12 @@ defmodule Pact.Builders.PactBuilderTest do
   alias Pact.Builders.RequestBuilder
   alias Pact.Builders.ResponseBuilder
   alias Pact.Models.V4.AsynchronousMessage
-  alias Pact.Patterns.JsonPattern
   alias Pact.MockServer
+  import Pact.Patterns
 
   use ExUnit.Case
 
-  doctest Pact.Patterns.JsonPattern
-  doctest Pact.Patterns.StringPattern
+  doctest Pact.Patterns
 
   test "a_service_consumer_side_of_a_pact_goes_a_little_something_like_this" do
     {:ok, service} =
@@ -41,7 +40,7 @@ defmodule Pact.Builders.PactBuilderTest do
       |> PactBuilder.message_interaction("hello message", fn mb ->
         mb
         |> MessageBuilder.test_name("test_message_client")
-        |> MessageBuilder.json_body(JsonPattern.json_pattern(%{"hello" => "world"}))
+        |> MessageBuilder.json_body(json_pattern(%{"hello" => "world"}))
       end)
       |> PactBuilder.messages()
 

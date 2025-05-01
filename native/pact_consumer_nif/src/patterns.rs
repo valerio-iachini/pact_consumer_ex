@@ -18,7 +18,7 @@ pub enum NifJsonPattern {
 pub enum NifJsonMatcher {
     MatchingRegex(String, String),
     Like(Box<NifJsonPattern>),
-    EachLike(Box<NifJsonPattern>),
+    EachLike(Box<NifJsonPattern>, usize),
     DateTime(String, String),
 }
 
@@ -53,7 +53,11 @@ impl From<NifJsonMatcher> for JsonPattern {
             NifJsonMatcher::Like(json_pattern) => {
                 Like::<JsonPattern>::new::<JsonPattern>((*json_pattern).into()).into()
             }
-            NifJsonMatcher::EachLike(json_pattern) => EachLike::new((*json_pattern).into()).into(),
+            NifJsonMatcher::EachLike(json_pattern, min_len) => {
+                EachLike::new((*json_pattern).into())
+                    .with_min_len(min_len)
+                    .into()
+            }
             NifJsonMatcher::DateTime(format, example) => {
                 DateTime::<JsonPattern>::new(format, example).into()
             }

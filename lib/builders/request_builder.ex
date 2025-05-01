@@ -3,8 +3,7 @@ defmodule Pact.Builders.RequestBuilder do
   Builder for `Request` objects. Normally created via `Pact.Builders.PactBuilder`.
   """
   alias Pact.Native.PactConsumer, as: Native
-  alias Pact.Patterns.JsonPattern
-  alias Pact.Patterns.StringPattern
+  alias Pact.Patterns
 
   @doc """
   Creates and returns a new request builder with default settings.
@@ -75,7 +74,7 @@ defmodule Pact.Builders.RequestBuilder do
   @spec header(
           builder :: Native.RequestBuilder.t(),
           name :: String.t(),
-          value :: StringPattern.t()
+          value :: Patterns.string_pattern()
         ) ::
           Native.RequestBuilder.t()
   def header(builder, name, value), do: Native.request_builder_header(builder, name, value)
@@ -87,7 +86,7 @@ defmodule Pact.Builders.RequestBuilder do
           builder :: Native.RequestBuilder.t(),
           name :: String.t(),
           expression :: String.t(),
-          value :: StringPattern.t()
+          value :: Patterns.string_pattern()
         ) :: Native.RequestBuilder.t()
   def header_from_provider_state(builder, name, expression, value),
     do: Native.request_builder_header_from_provider_state(builder, name, expression, value)
@@ -134,14 +133,14 @@ defmodule Pact.Builders.RequestBuilder do
   @doc """
   Specify the body as `JsonPattern`, possibly including special matching rules.
   """
-  @spec json_body(builder :: Native.RequestBuilder.t(), body :: JsonPattern.t()) ::
+  @spec json_body(builder :: Native.RequestBuilder.t(), body :: Patterns.json_pattern()) ::
           Native.RequestBuilder.t()
   def json_body(builder, body), do: Native.request_builder_json_body(builder, Jason.encode!(body))
 
   @doc """
   Specify a text body (text/plain) matching the given pattern.
   """
-  @spec body_matching(builder :: Native.RequestBuilder.t(), body :: StringPattern.t()) ::
+  @spec body_matching(builder :: Native.RequestBuilder.t(), body :: Patterns.string_pattern()) ::
           Native.RequestBuilder.t()
   def body_matching(builder, body), do: Native.request_builder_body_matching(builder, body)
 
@@ -150,7 +149,7 @@ defmodule Pact.Builders.RequestBuilder do
   """
   @spec body_matching2(
           builder :: Native.RequestBuilder.t(),
-          body :: StringPattern.t(),
+          body :: Patterns.string_pattern(),
           content_type :: String.t()
         ) ::
           Native.RequestBuilder.t()

@@ -20,7 +20,7 @@ defmodule Pact.Patterns do
   @type json_matcher ::
           {:datetime, String.t(), String.t()}
           | {:like, json_pattern()}
-          | {:each_like, json_pattern()}
+          | {:each_like, json_pattern(), non_neg_integer()}
           | {:matching_regex, String.t(), String.t()}
 
   @type string_pattern ::
@@ -56,15 +56,27 @@ defmodule Pact.Patterns do
   def like(pattern), do: {:like, pattern}
 
   @doc """
-  Creates an each_like matcher exclusively for JSON patterns.
+  Creates an each_like matcher for JSON arrays with optional minimum length.
+
+  ## Parameters
+    - pattern: The example pattern for array elements
+    - min_length: Minimum required array length (default: 1, must be ≥ 0)
 
   ## Examples
-
+      # With default minimum length
       iex> Pact.Patterns.each_like("item")
-      {:each_like, "item"}
+      {:each_like, "item", 1}
+
+      # With explicit minimum length
+      iex> Pact.Patterns.each_like("item", 3)
+      {:each_like, "item", 3}
   """
   @spec each_like(json_pattern()) :: json_matcher()
-  def each_like(pattern), do: {:each_like, pattern}
+  @spec each_like(json_pattern(), non_neg_integer()) :: json_matcher()
+  def each_like(pattern, min_length \\ 1)
+
+  def each_like(pattern, min_length) when is_integer(min_length) and min_length >= 0,
+    do: {:each_like, pattern, min_length}
 
   @doc """
   Creates a regex matcher (alias for matching_regex/2).

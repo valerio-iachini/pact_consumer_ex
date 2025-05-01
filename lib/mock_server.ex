@@ -27,7 +27,7 @@ defmodule Pact.MockServer do
     GenServer.call(pid, :url)
   end
 
-  @doc"""
+  @doc """
   Given a path string, return a URL pointing to that path on the mock
   server. If the path cannot be parsed as URL, **this function will
   panic**. For a non-panicking version, call Pact.MockServer.url/1 instead and build

@@ -3,6 +3,7 @@ defmodule Pact.Native.Builders.ResponseBuilder do
 
   alias Pact.Native.PactConsumer.HttpResponse
   alias Pact.Native.PactConsumer.Response
+  alias Pact.Patterns
 
   defmacro __using__(_opts) do
     quote do
@@ -46,7 +47,7 @@ defmodule Pact.Native.Builders.ResponseBuilder do
       @spec response_builder_header(
               builder :: ResponseBuilder.t(),
               name :: String.t(),
-              value :: String.t()
+              value :: Patterns.string_pattern()
             ) :: ResponseBuilder.t()
       def response_builder_header(_builder, _name, _value), do: :erlang.nif_error(:nif_not_loaded)
 
@@ -54,7 +55,7 @@ defmodule Pact.Native.Builders.ResponseBuilder do
               builder :: ResponseBuilder.t(),
               name :: String.t(),
               expression :: String.t(),
-              value :: String.t()
+              value :: Patterns.string_pattern()
             ) :: ResponseBuilder.t()
       def response_builder_header_from_provider_state(_builder, _name, _expression, _value),
         do: :erlang.nif_error(:nif_not_loaded)
@@ -81,17 +82,17 @@ defmodule Pact.Native.Builders.ResponseBuilder do
       def response_builder_body2(_builder, _body, _content_type),
         do: :erlang.nif_error(:nif_not_loaded)
 
-      @spec response_builder_json_body(builder :: ResponseBuilder.t(), body :: String.t()) ::
+      @spec response_builder_json_body(builder :: ResponseBuilder.t(), body :: Patterns.json_pattern()) ::
               ResponseBuilder.t()
       def response_builder_json_body(_builder, _body), do: :erlang.nif_error(:nif_not_loaded)
 
-      @spec response_builder_body_matching(builder :: ResponseBuilder.t(), body :: String.t()) ::
+      @spec response_builder_body_matching(builder :: ResponseBuilder.t(), body :: Patterns.string_pattern()) ::
               ResponseBuilder.t()
       def response_builder_body_matching(_builder, _body), do: :erlang.nif_error(:nif_not_loaded)
 
       @spec response_builder_body_matching2(
               builder :: ResponseBuilder.t(),
-              body :: String.t(),
+              body :: Patterns.string_pattern(),
               content_type :: String.t()
             ) :: ResponseBuilder.t()
       def response_builder_body_matching2(_builder, _body, _content_type),

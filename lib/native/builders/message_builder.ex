@@ -1,7 +1,7 @@
 defmodule Pact.Native.Builders.MessageBuilder do
   @moduledoc false
 
-  alias Pact.Patterns.JsonPattern
+  alias Pact.Patterns
   alias Pact.Native.PactConsumer.Interaction
 
   defmacro __using__(_opts) do
@@ -59,7 +59,7 @@ defmodule Pact.Native.Builders.MessageBuilder do
 
       @spec message_builder_json_body(
               builder :: MessageInteractionBuilder.t(),
-              body :: JsonPattern.t()
+              body :: Patterns.json_pattern()
             ) ::
               MessageInteractionBuilder.t()
       def message_builder_json_body(_builder, _body), do: :erlang.nif_error(:nif_not_loaded)

@@ -3,8 +3,7 @@ defmodule Pact.Builders.ResponseBuilder do
   Builder for `Response` objects. Normally created via `Pact.Builders.PactBuilder`.
   """
   alias Pact.Native.PactConsumer, as: Native
-  alias Pact.Patterns.JsonPattern
-  alias Pact.Patterns.StringPattern
+  alias Pact.Patterns
 
   @spec default() :: Native.ResponseBuilder.t()
   def default(), do: Native.response_builder_default()
@@ -58,7 +57,7 @@ defmodule Pact.Builders.ResponseBuilder do
   @spec header(
           builder :: Native.ResponseBuilder.t(),
           name :: String.t(),
-          value :: StringPattern.t()
+          value :: Patterns.string_pattern()
         ) :: Native.ResponseBuilder.t()
   def header(builder, name, value),
     do: Native.response_builder_header(builder, name, value)
@@ -70,7 +69,7 @@ defmodule Pact.Builders.ResponseBuilder do
           builder :: Native.ResponseBuilder.t(),
           name :: String.t(),
           expression :: String.t(),
-          value :: StringPattern.t()
+          value :: Patterns.string_pattern()
         ) :: Native.ResponseBuilder.t()
   def header_from_provider_state(builder, name, expression, value),
     do: Native.response_builder_header_from_provider_state(builder, name, expression, value)
@@ -120,7 +119,7 @@ defmodule Pact.Builders.ResponseBuilder do
   @doc """
   Specify a body literal. This does not allow using patterns.
   """
-  @spec json_body(builder :: Native.ResponseBuilder.t(), body :: JsonPattern.t()) ::
+  @spec json_body(builder :: Native.ResponseBuilder.t(), body :: Patterns.json_pattern()) ::
           Native.ResponseBuilder.t()
   def json_body(builder, body),
     do: Native.response_builder_json_body(builder, Jason.encode!(body))
@@ -128,7 +127,7 @@ defmodule Pact.Builders.ResponseBuilder do
   @doc """
   Specify a text body (text/plain) matching the given pattern.
   """
-  @spec body_matching(builder :: Native.ResponseBuilder.t(), body :: StringPattern.t()) ::
+  @spec body_matching(builder :: Native.ResponseBuilder.t(), body :: Patterns.string_pattern()) ::
           Native.ResponseBuilder.t()
   def body_matching(builder, body),
     do: Native.response_builder_body_matching(builder, body)
@@ -138,7 +137,7 @@ defmodule Pact.Builders.ResponseBuilder do
   """
   @spec body_matching2(
           builder :: Native.ResponseBuilder.t(),
-          body :: StringPattern.t(),
+          body :: Patterns.string_pattern(),
           content_type :: String.t()
         ) :: Native.ResponseBuilder.t()
   def body_matching2(builder, body, content_type),

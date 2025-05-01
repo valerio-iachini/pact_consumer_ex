@@ -3,7 +3,7 @@ defmodule Pact.Builders.MessageBuilder do
   Asynchronous message interaction builder. Normally created via `Pact.Builders.PactBuilder.message_interaction`.
   """
   alias Pact.Native.PactConsumer, as: Native
-  alias Pact.Patterns.JsonPattern
+  alias Pact.Patterns
 
   @doc """
   Create a new message interaction builder, Description is the interaction description and interaction_type is the type of message (leave empty for the default type).
@@ -63,7 +63,7 @@ defmodule Pact.Builders.MessageBuilder do
   Specify the body as `JsonPattern`, possibly including special matching
   rules.
   """
-  @spec json_body(builder :: Native.MessageInteractionBuilder.t(), body :: JsonPattern.t()) ::
+  @spec json_body(builder :: Native.MessageInteractionBuilder.t(), body :: Patterns.json_pattern()) ::
           Native.MessageInteractionBuilder.t()
   def json_body(builder, body), do: Native.message_builder_json_body(builder, body)
 

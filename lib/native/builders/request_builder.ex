@@ -3,6 +3,7 @@ defmodule Pact.Native.Builders.RequestBuilder do
 
   alias Pact.Native.PactConsumer.HttpRequest
   alias Pact.Native.PactConsumer.Request
+  alias Pact.Patterns
 
   defmacro __using__(_opts) do
     quote do
@@ -61,7 +62,7 @@ defmodule Pact.Native.Builders.RequestBuilder do
       @spec request_builder_header(
               builder :: RequestBuilder.t(),
               name :: String.t(),
-              value :: String.t()
+              value :: Patterns.string_pattern()
             ) :: RequestBuilder.t()
       def request_builder_header(_builder, _name, _value), do: :erlang.nif_error(:nif_not_loaded)
 
@@ -69,7 +70,7 @@ defmodule Pact.Native.Builders.RequestBuilder do
               builder :: RequestBuilder.t(),
               name :: String.t(),
               expression :: String.t(),
-              value :: String.t()
+              value :: Patterns.string_pattern()
             ) :: RequestBuilder.t()
       def request_builder_header_from_provider_state(_builder, _name, _expression, _value),
         do: :erlang.nif_error(:nif_not_loaded)
@@ -96,17 +97,17 @@ defmodule Pact.Native.Builders.RequestBuilder do
       def request_builder_body2(_builder, _body, _content_type),
         do: :erlang.nif_error(:nif_not_loaded)
 
-      @spec request_builder_json_body(builder :: RequestBuilder.t(), body :: String.t()) ::
+      @spec request_builder_json_body(builder :: RequestBuilder.t(), body :: Patterns.json_pattern()) ::
               RequestBuilder.t()
       def request_builder_json_body(_builder, _body), do: :erlang.nif_error(:nif_not_loaded)
 
-      @spec request_builder_body_matching(builder :: RequestBuilder.t(), body :: String.t()) ::
+      @spec request_builder_body_matching(builder :: RequestBuilder.t(), body :: Patterns.string_pattern()) ::
               RequestBuilder.t()
       def request_builder_body_matching(_builder, _body), do: :erlang.nif_error(:nif_not_loaded)
 
       @spec request_builder_body_matching2(
               builder :: RequestBuilder.t(),
-              body :: String.t(),
+              body :: Patterns.string_pattern(),
               content_type :: String.t()
             ) :: RequestBuilder.t()
       def request_builder_body_matching2(_builder, _body, _content_type),

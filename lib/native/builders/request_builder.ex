@@ -97,11 +97,17 @@ defmodule Pact.Native.Builders.RequestBuilder do
       def request_builder_body2(_builder, _body, _content_type),
         do: :erlang.nif_error(:nif_not_loaded)
 
-      @spec request_builder_json_body(builder :: RequestBuilder.t(), body :: Patterns.json_pattern()) ::
+      @spec request_builder_json_body(
+              builder :: RequestBuilder.t(),
+              body :: Patterns.json_pattern()
+            ) ::
               RequestBuilder.t()
       def request_builder_json_body(_builder, _body), do: :erlang.nif_error(:nif_not_loaded)
 
-      @spec request_builder_body_matching(builder :: RequestBuilder.t(), body :: Patterns.string_pattern()) ::
+      @spec request_builder_body_matching(
+              builder :: RequestBuilder.t(),
+              body :: Patterns.string_pattern()
+            ) ::
               RequestBuilder.t()
       def request_builder_body_matching(_builder, _body), do: :erlang.nif_error(:nif_not_loaded)
 

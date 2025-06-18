@@ -63,7 +63,10 @@ defmodule Pact.Builders.MessageBuilder do
   Specify the body as `JsonPattern`, possibly including special matching
   rules.
   """
-  @spec json_body(builder :: Native.MessageInteractionBuilder.t(), body :: Patterns.json_pattern()) ::
+  @spec json_body(
+          builder :: Native.MessageInteractionBuilder.t(),
+          body :: Patterns.json_pattern()
+        ) ::
           Native.MessageInteractionBuilder.t()
   def json_body(builder, body), do: Native.message_builder_json_body(builder, body)
 

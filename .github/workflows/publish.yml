@@ -7,7 +7,6 @@ jobs:
   publish:
     name: Publish to Hex.pm
     runs-on: ubuntu-latest
-    needs: build_release
     permissions:
       contents: read
     steps:
@@ -25,4 +24,4 @@ jobs:
         with:
           key: ${{ secrets.HEX_API_KEY }}
           name: pact_consumer_ex
-          tag-release: 'false'
+          tag-release: "false"

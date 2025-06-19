@@ -5,7 +5,8 @@ defmodule Pact.Native.PactConsumer do
   use RustlerPrecompiled,
     otp_app: :pact_consumer_ex,
     crate: "pact_consumer_nif",
-    base_url: "https://github.com/valerio-iachini/pact_consumer_ex/releases/download/v#{@version}",
+    base_url:
+      "https://github.com/valerio-iachini/pact_consumer_ex/releases/download/v#{@version}",
     force_build: System.get_env("PACT_CONSUMER_EX_FORCE_BUILD") == "true",
     version: @version
 

@@ -1,6 +1,6 @@
 defmodule Pact.Native.PactConsumer do
   @moduledoc false
-  @version Mix.Project.config()[:version]
+  @version "0.2.1"
 
   use RustlerPrecompiled,
     otp_app: :pact_consumer_ex,

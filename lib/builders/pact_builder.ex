@@ -27,8 +27,9 @@ defmodule Pact.Builders.PactBuilder do
           builder :: Native.PactBuilder.t(),
           description :: String.t(),
           interaction_type :: String.t(),
-          build_fn :: (interaction_builder :: Native.InteractionBuilder.t() ->
-                         Native.InteractionBuilder.t())
+          build_fn ::
+            (interaction_builder :: Native.InteractionBuilder.t() ->
+               Native.InteractionBuilder.t())
         ) :: Native.PactBuilder.t()
   def interaction(builder, description, interaction_type, build_fn) do
     interaction = build_fn.(InteractionBuilder.new(description, interaction_type))
@@ -52,8 +53,9 @@ defmodule Pact.Builders.PactBuilder do
   @spec message_interaction(
           builder :: Native.PactBuilder.t(),
           description :: String.t(),
-          build_fn :: (message_interaction_builder :: Native.MessageInteractionBuilder.t() ->
-                         Native.MessageInteractionBuilder.t())
+          build_fn ::
+            (message_interaction_builder :: Native.MessageInteractionBuilder.t() ->
+               Native.MessageInteractionBuilder.t())
         ) :: Native.PactBuilder.t()
   def message_interaction(builder, description, build_fn) do
     interaction = build_fn.(MessageBuilder.new(description))

@@ -34,7 +34,7 @@ defmodule PactElixir.MixProject do
 
   defp deps do
     [
-      {:rustler, "~> 0.36.1"},
+      {:rustler, "~> 0.36.1", optional: true},
       {:rustler_precompiled, "~> 0.8.2"},
       {:jason, "~> 1.4.4"},
       {:httpoison, "~> 2.2.2", only: [:test]},

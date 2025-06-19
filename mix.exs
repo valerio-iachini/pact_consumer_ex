@@ -4,7 +4,7 @@ defmodule PactElixir.MixProject do
   def project do
     [
       app: :pact_consumer_ex,
-      version: "0.2.0",
+      version: "0.2.1",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -25,6 +25,7 @@ defmodule PactElixir.MixProject do
         "Cargo.toml",
         "Cargo.lock",
         "mix.exs",
+        "checksum-*.exs",
         "README.md",
         "LICENSE"
       ]
@@ -33,7 +34,8 @@ defmodule PactElixir.MixProject do
 
   defp deps do
     [
-      {:rustler, "~> 0.36.1"},
+      {:rustler, "~> 0.36.1", optional: true},
+      {:rustler_precompiled, "~> 0.8.2"},
       {:jason, "~> 1.4.4"},
       {:httpoison, "~> 2.2.2", only: [:test]},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},

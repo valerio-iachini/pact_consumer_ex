@@ -82,11 +82,17 @@ defmodule Pact.Native.Builders.ResponseBuilder do
       def response_builder_body2(_builder, _body, _content_type),
         do: :erlang.nif_error(:nif_not_loaded)
 
-      @spec response_builder_json_body(builder :: ResponseBuilder.t(), body :: Patterns.json_pattern()) ::
+      @spec response_builder_json_body(
+              builder :: ResponseBuilder.t(),
+              body :: Patterns.json_pattern()
+            ) ::
               ResponseBuilder.t()
       def response_builder_json_body(_builder, _body), do: :erlang.nif_error(:nif_not_loaded)
 
-      @spec response_builder_body_matching(builder :: ResponseBuilder.t(), body :: Patterns.string_pattern()) ::
+      @spec response_builder_body_matching(
+              builder :: ResponseBuilder.t(),
+              body :: Patterns.string_pattern()
+            ) ::
               ResponseBuilder.t()
       def response_builder_body_matching(_builder, _body), do: :erlang.nif_error(:nif_not_loaded)
 

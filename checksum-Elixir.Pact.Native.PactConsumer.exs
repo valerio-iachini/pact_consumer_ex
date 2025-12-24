@@ -1,10 +1,10 @@
 %{
-  "libpact_consumer_nif-v0.2.1-nif-2.15-aarch64-apple-darwin.so.tar.gz" => "sha256:d7b71e7d954967c31ba282d50bd0017d06eea84b1c356c0868db61a923cb6bb0",
-  "libpact_consumer_nif-v0.2.1-nif-2.15-aarch64-unknown-linux-gnu.so.tar.gz" => "sha256:ca86c42a06cf804c97aee5e9dd02bdf4f0ca191c8a6cd9ca3f4fe61fb2ce9a13",
-  "libpact_consumer_nif-v0.2.1-nif-2.15-arm-unknown-linux-gnueabihf.so.tar.gz" => "sha256:198b66cf5775afbf8b7d55fbab136af3d3bdf961ed50c633e06b0fcd9abb1f9b",
-  "libpact_consumer_nif-v0.2.1-nif-2.15-riscv64gc-unknown-linux-gnu.so.tar.gz" => "sha256:9de8d2692ad66534b52a0a9c456be50393cfbdf8da2a6fada9ff024de09f1669",
-  "libpact_consumer_nif-v0.2.1-nif-2.15-x86_64-apple-darwin.so.tar.gz" => "sha256:14a8d6e8c6bcd79327eb3a3f0d1ad344af95c85dca8ba1b316ffe91a0c0de80c",
-  "libpact_consumer_nif-v0.2.1-nif-2.15-x86_64-unknown-linux-gnu.so.tar.gz" => "sha256:33ca9aa28b9f9a1df4ebd51e61861c418768fb4030efc2bd33b6c201d93b9886",
-  "pact_consumer_nif-v0.2.1-nif-2.15-x86_64-pc-windows-gnu.dll.tar.gz" => "sha256:ceaef95d93ff6aaafdf68a48aaa22a18033b340398b8e62246d116f80328bcf2",
-  "pact_consumer_nif-v0.2.1-nif-2.15-x86_64-pc-windows-msvc.dll.tar.gz" => "sha256:11f2587b399b3fe68a475c90840ce6e78c89d0abbe162e9904830ed2b1b6a24b",
+  "libpact_consumer_nif-v0.2.2-nif-2.15-aarch64-apple-darwin.so.tar.gz" => "sha256:7aa0a47d64b2e460c2d62ec37dca931dc94515a8b66937c3dfde447dc89bd66b",
+  "libpact_consumer_nif-v0.2.2-nif-2.15-aarch64-unknown-linux-gnu.so.tar.gz" => "sha256:780740d70871f8b039725de7488d68aaedaff2a6920e154a4ac716b2c69fe147",
+  "libpact_consumer_nif-v0.2.2-nif-2.15-arm-unknown-linux-gnueabihf.so.tar.gz" => "sha256:2e9861264b6e08fb49cd4ee9b6b25ed55bfdfd0ee6f2033804e3f696b71b88cc",
+  "libpact_consumer_nif-v0.2.2-nif-2.15-riscv64gc-unknown-linux-gnu.so.tar.gz" => "sha256:87951a6f769e33fb41cd38d8dbc6d237b586ea97d717368d2b946af44b14bd5f",
+  "libpact_consumer_nif-v0.2.2-nif-2.15-x86_64-apple-darwin.so.tar.gz" => "sha256:41a781cec0722cbf4954786ba4819d94ea43ff93b754fbb798a9b186eafd1e20",
+  "libpact_consumer_nif-v0.2.2-nif-2.15-x86_64-unknown-linux-gnu.so.tar.gz" => "sha256:c5d269dc7486820092f4eaf900c70cced1f602903b2dae44db11e813a3931283",
+  "pact_consumer_nif-v0.2.2-nif-2.15-x86_64-pc-windows-gnu.dll.tar.gz" => "sha256:8a763ca1f8d6345192ec067a675fad9ea954c8b28fe924e51718de82c3f72bf8",
+  "pact_consumer_nif-v0.2.2-nif-2.15-x86_64-pc-windows-msvc.dll.tar.gz" => "sha256:ef82d87f3459548dc97cb299f2bdca1f35035531e782dcad9a1848e5b19964bc",
 }

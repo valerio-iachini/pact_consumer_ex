@@ -1,0 +1,38 @@
+version: 2
+updates:
+  - package-ecosystem: "mix"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "elixir-dependencies"
+      - "dependencies"
+    groups:
+      elixir-updates:
+        patterns:
+          - "*" 
+
+  - package-ecosystem: "cargo"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    labels:
+      - "rust-dependencies"
+      - "dependencies"
+    groups:
+      rust-updates:
+        patterns:
+          - "*"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "github-actions"
+      - "dependencies"
+    groups:
+      github-actions-updates:
+        patterns:
+          - "*"

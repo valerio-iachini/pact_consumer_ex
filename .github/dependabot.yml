@@ -12,7 +12,6 @@ updates:
       elixir-updates:
         patterns:
           - "*" 
-
   - package-ecosystem: "cargo"
     directory: "/"
     schedule:

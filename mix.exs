@@ -39,7 +39,7 @@ defmodule PactElixir.MixProject do
       {:jason, "~> 1.4.4"},
       {:httpoison, "~> 2.3.0", only: [:test]},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end

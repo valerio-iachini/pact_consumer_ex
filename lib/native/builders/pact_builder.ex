@@ -37,6 +37,14 @@ defmodule Pact.Native.Builders.PactBuilder do
 
       @spec pact_builder_messages(builder :: PactBuilder.t()) :: [AsynchronousMessage.t()]
       def pact_builder_messages(_builder), do: :erlang.nif_error(:nif_not_loaded)
+
+      @spec pact_builder_using_plugin(
+              builder :: PactBuilder.t(),
+              name :: String.t(),
+              version :: String.t() | nil
+            ) :: PactBuilder.t()
+      def pact_builder_using_plugin(builder, name, version),
+        do: :erlang.nif_error(:nif_not_loaded)
     end
   end
 end

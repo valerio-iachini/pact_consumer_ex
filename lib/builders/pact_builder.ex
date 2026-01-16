@@ -84,4 +84,17 @@ defmodule Pact.Builders.PactBuilder do
   """
   @spec messages(builder :: Native.PactBuilder.t()) :: [Native.AsynchronousMessage.t()]
   def messages(builder), do: Native.pact_builder_messages(builder)
+
+  @doc """
+  Add a plugin to be used by the test. This requires the plugins feature.
+
+  Panics: Plugins only work with V4 specification pacts. This method will panic if the pact being built is V3 format. Use PactBuilder::new_v4 to create a builder with a V4 format pact.
+  """
+  @spec using_plugin(
+          builder :: Native.PactBuilder.t(),
+          name :: String.t(),
+          version :: String.t() | nil
+        ) :: Native.PactBuilder.t()
+  def using_plugin(builder, name, version \\ nil),
+    do: Native.pact_builder_using_plugin(builder, name, version)
 end

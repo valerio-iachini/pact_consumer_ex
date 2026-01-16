@@ -1,4 +1,4 @@
-use pact_consumer::prelude::PactBuilder;
+use pact_consumer::prelude::PactBuilderAsync;
 use rustler::{NifResult, NifStruct, Resource, ResourceArc};
 use std::sync::Mutex;
 
@@ -14,23 +14,23 @@ pub struct NifPactBuilder {
     is_v4: bool,
 }
 
-pub struct PactBuilderResource(Mutex<PactBuilder>);
+pub struct PactBuilderResource(Mutex<PactBuilderAsync>);
 
 impl NifPactBuilder {
     fn new(consumer: String, provider: String) -> Self {
         Self {
-            inner: ResourceArc::new(PactBuilderResource(Mutex::new(PactBuilder::new(
-                consumer, provider,
-            )))),
+            inner: ResourceArc::new(PactBuilderResource(Mutex::new(
+                PactBuilderAsync::new(consumer, provider).into(),
+            ))),
             is_v4: false,
         }
     }
 
     fn new_v4(consumer: String, provider: String) -> Self {
         Self {
-            inner: ResourceArc::new(PactBuilderResource(Mutex::new(PactBuilder::new_v4(
-                consumer, provider,
-            )))),
+            inner: ResourceArc::new(PactBuilderResource(Mutex::new(
+                PactBuilderAsync::new_v4(consumer, provider).into(),
+            ))),
             is_v4: true,
         }
     }
@@ -39,7 +39,7 @@ impl NifPactBuilder {
 impl NifPactBuilder {
     pub fn invoke<F, T>(&self, fun: F) -> NifResult<T>
     where
-        F: FnOnce(&mut PactBuilder) -> NifResult<T>,
+        F: FnOnce(&mut PactBuilderAsync) -> NifResult<T>,
     {
         let mut inner = self
             .inner
@@ -90,4 +90,17 @@ fn messages(builder: NifPactBuilder) -> NifResult<Vec<NifAsynchronousMessage>> {
             })
             .collect())
     })
+}
+
+#[rustler::nif(name = "pact_builder_using_plugin", schedule = "DirtyIo")]
+fn using_plugin(
+    builder: NifPactBuilder,
+    name: String,
+    version: Option<String>,
+) -> NifResult<NifPactBuilder> {
+    builder.invoke(|b| {
+        futures::executor::block_on(b.using_plugin(&name, version));
+        Ok(())
+    })?;
+    Ok(builder)
 }

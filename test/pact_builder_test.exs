@@ -46,4 +46,34 @@ defmodule Pact.Builders.PactBuilderTest do
 
     assert AsynchronousMessage.bytes(message) == ~c"{\"hello\":\"world\"}"
   end
+
+  test "csv_plugin" do
+    {:ok, service} =
+      PactBuilder.new("CsvClient", "CsvServer")
+      |> PactBuilder.using_plugin("csv")
+      |> PactBuilder.interaction("request for a CSV report", "core/interaction/http", fn ib ->
+        ib
+        |> InteractionBuilder.request(fn rb ->
+          rb |> RequestBuilder.path("/reports/report001.csv")
+        end)
+        |> InteractionBuilder.response(fn rb ->
+          rb
+          |> ResponseBuilder.ok()
+          |> ResponseBuilder.content_type("text/plain")
+          |> ResponseBuilder.json_body(
+            json_pattern(%{
+              "csvHeaders" => false,
+              "column:1" => "matching(type,'Name')",
+              "column:2" => "matching(number,100)",
+              "column:3" => "matching(datetime, 'yyyy-MM-dd','2000-01-01')"
+            })
+          )
+        end)
+      end)
+      |> PactBuilder.start_mock_server()
+
+    response = HTTPoison.get!(MockServer.path(service, "/reports/report001.csv"))
+
+    assert %HTTPoison.Response{status_code: 200, body: "Name,100,2000-01-01"} = response
+  end
 end

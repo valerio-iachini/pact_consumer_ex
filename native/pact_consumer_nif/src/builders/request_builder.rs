@@ -9,6 +9,7 @@ use crate::{
 use pact_consumer::{builders::RequestBuilder, prelude::HttpPartBuilder};
 use rustler::{NifResult, NifStruct, Resource, ResourceArc};
 use std::{ops::Deref, sync::Mutex};
+use tokio::runtime::Runtime;
 
 #[derive(NifStruct)]
 #[module = "RequestBuilder"]
@@ -39,6 +40,18 @@ impl NifRequestBuilder {
 
         fun(&mut inner)
     }
+    pub fn invoke_async<F, T>(&self, fun: F) -> NifResult<T>
+    where
+        F: AsyncFnOnce(&mut RequestBuilder) -> NifResult<T>,
+    {
+        let mut inner = self
+            .inner
+            .0
+            .lock()
+            .map_err(|_e| rustler::Error::RaiseAtom("invalid_pact_builder_reference"))?;
+        let rt = Runtime::new().unwrap();
+        rt.block_on(async { fun(&mut inner).await })
+    }
 }
 
 impl Resource for RequestBuilderResource {}
@@ -68,6 +81,29 @@ pub fn build_v4(builder: NifRequestBuilder) -> NifResult<NifHttpRequest> {
             inner: ResourceArc::new(HttpRequestResource(b.build_v4())),
         })
     })
+}
+
+#[rustler::nif(name = "request_builder_contents", schedule = "DirtyIo")]
+pub fn contents(
+    builder: NifRequestBuilder,
+    content_type: String,
+    definition: String,
+) -> NifResult<NifRequestBuilder> {
+    builder.invoke_async(async move |b| {
+        let definition: serde_json::Value = serde_json::from_str(&definition)
+            .map_err(|_e| rustler::Error::RaiseAtom("invalid_definition"))?;
+        b.contents(
+            content_type
+                .parse()
+                .map_err(|_| rustler::Error::RaiseAtom("invalid_definition"))?,
+            definition,
+        )
+        .await;
+
+        Ok(())
+    })?;
+
+    Ok(builder)
 }
 
 impl_builder_nif!("request_builder_method", NifRequestBuilder, method(value: String));

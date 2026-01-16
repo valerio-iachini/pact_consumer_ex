@@ -3,9 +3,9 @@ defmodule Pact.Builders.InteractionBuilder do
   Builder for `Interaction` objects. Normally created via
   `Pact.Builder.PactBuilder.interaction`.
   """
-  alias Pact.Native.PactConsumer, as: Native
   alias Pact.Builders.RequestBuilder
   alias Pact.Builders.ResponseBuilder
+  alias Pact.Native.PactConsumer, as: Native
 
   @doc """
   Create a new interaction.

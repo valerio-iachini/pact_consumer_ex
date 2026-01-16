@@ -9,7 +9,7 @@ defmodule Pact.Builders.RequestBuilder do
   Creates and returns a new request builder with default settings.
   """
   @spec default() :: Native.RequestBuilder.t()
-  def default(), do: Native.request_builder_default()
+  def default, do: Native.request_builder_default()
 
   @doc """
   Specify the request method. Defaults to `"GET"`.
@@ -155,6 +155,17 @@ defmodule Pact.Builders.RequestBuilder do
           Native.RequestBuilder.t()
   def body_matching2(builder, body, content_type),
     do: Native.request_builder_body_matching2(builder, body, content_type)
+
+  @doc """
+  Set the request body using the JSON data. If the body is being supplied by a plugin, this is what is sent to the plugin to setup the body.
+  """
+  @spec contents(
+          builder :: Native.RequestBuilder.t(),
+          content_type :: String.t(),
+          definition :: term()
+        ) :: Native.RequestBuilder.t()
+  def contents(builder, content_type, definition),
+    do: Native.request_builder_contents(builder, content_type, Jason.encode!(definition))
 
   @doc """
   Build the specified `Request` object.

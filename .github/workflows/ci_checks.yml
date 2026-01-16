@@ -1,8 +1,6 @@
 name: CI Checks
 
-on:
-  pull_request:
-    branches: [ main ]
+on: [pull_request]
 
 jobs:
   rust:
@@ -28,13 +26,21 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MIX_ENV: test
+      PACT_CONSUMER_EX_FORCE_BUILD: true
     steps:
       - uses: actions/checkout@v6
       - name: Setup Elixir
         uses: erlef/setup-beam@v1
         with:
-          elixir-version: 1.15
+          elixir-version: 1.16
           otp-version: 25
+      - name: Install pact-plugin-cli
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-plugins/main/scripts/install-plugin-cli.sh | bash
+          echo "$HOME/.pact/bin" >> $GITHUB_PATH
+      - name: Install Pact CSV plugin
+        run: |
+          pact-plugin-cli install csv
       - name: Install dependencies
         run: mix deps.get
       - name: Format Check
@@ -42,5 +48,7 @@ jobs:
       - name: Credo Lint
         run: mix credo --strict
       - name: Dialyzer Analysis
-        run: mix dialyzer --halt-exit-status
+        run: mix dialyzer
+      - name: Test
+        run: mix test
 

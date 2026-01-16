@@ -1,6 +1,7 @@
-use pact_consumer::prelude::PactBuilder;
+use pact_consumer::prelude::PactBuilderAsync;
 use rustler::{NifResult, NifStruct, Resource, ResourceArc};
 use std::sync::Mutex;
+use tokio::runtime::Runtime;
 
 use crate::models::{
     interaction::NifInteraction,
@@ -14,12 +15,12 @@ pub struct NifPactBuilder {
     is_v4: bool,
 }
 
-pub struct PactBuilderResource(Mutex<PactBuilder>);
+pub struct PactBuilderResource(Mutex<PactBuilderAsync>);
 
 impl NifPactBuilder {
     fn new(consumer: String, provider: String) -> Self {
         Self {
-            inner: ResourceArc::new(PactBuilderResource(Mutex::new(PactBuilder::new(
+            inner: ResourceArc::new(PactBuilderResource(Mutex::new(PactBuilderAsync::new(
                 consumer, provider,
             )))),
             is_v4: false,
@@ -28,7 +29,7 @@ impl NifPactBuilder {
 
     fn new_v4(consumer: String, provider: String) -> Self {
         Self {
-            inner: ResourceArc::new(PactBuilderResource(Mutex::new(PactBuilder::new_v4(
+            inner: ResourceArc::new(PactBuilderResource(Mutex::new(PactBuilderAsync::new_v4(
                 consumer, provider,
             )))),
             is_v4: true,
@@ -39,7 +40,7 @@ impl NifPactBuilder {
 impl NifPactBuilder {
     pub fn invoke<F, T>(&self, fun: F) -> NifResult<T>
     where
-        F: FnOnce(&mut PactBuilder) -> NifResult<T>,
+        F: FnOnce(&mut PactBuilderAsync) -> NifResult<T>,
     {
         let mut inner = self
             .inner
@@ -48,6 +49,20 @@ impl NifPactBuilder {
             .map_err(|_e| rustler::Error::RaiseAtom("invalid_pact_builder_reference"))?;
 
         fun(&mut inner)
+    }
+
+    pub fn invoke_async<F, T>(&self, fun: F) -> NifResult<T>
+    where
+        F: AsyncFnOnce(&mut PactBuilderAsync) -> NifResult<T>,
+    {
+        let mut inner = self
+            .inner
+            .0
+            .lock()
+            .map_err(|_e| rustler::Error::RaiseAtom("invalid_pact_builder_reference"))?;
+
+        let rt = Runtime::new().unwrap();
+        rt.block_on(async { fun(&mut inner).await })
     }
 }
 
@@ -90,4 +105,18 @@ fn messages(builder: NifPactBuilder) -> NifResult<Vec<NifAsynchronousMessage>> {
             })
             .collect())
     })
+}
+
+#[rustler::nif(name = "pact_builder_using_plugin", schedule = "DirtyIo")]
+fn using_plugin(
+    builder: NifPactBuilder,
+    name: String,
+    version: Option<String>,
+) -> NifResult<NifPactBuilder> {
+    builder.invoke_async(async move |b| {
+        b.using_plugin(&name, version).await;
+        Ok(())
+    })?;
+
+    Ok(builder)
 }

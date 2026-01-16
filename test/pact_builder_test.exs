@@ -1,11 +1,11 @@
 defmodule Pact.Builders.PactBuilderTest do
-  alias Pact.Builders.PactBuilder
   alias Pact.Builders.InteractionBuilder
   alias Pact.Builders.MessageBuilder
+  alias Pact.Builders.PactBuilder
   alias Pact.Builders.RequestBuilder
   alias Pact.Builders.ResponseBuilder
-  alias Pact.Models.V4.AsynchronousMessage
   alias Pact.MockServer
+  alias Pact.Models.V4.AsynchronousMessage
   import Pact.Patterns
 
   use ExUnit.Case
@@ -45,5 +45,35 @@ defmodule Pact.Builders.PactBuilderTest do
       |> PactBuilder.messages()
 
     assert AsynchronousMessage.bytes(message) == ~c"{\"hello\":\"world\"}"
+  end
+
+  test "csv_plugin" do
+    {:ok, service} =
+      PactBuilder.new_v4("CsvClient", "CsvServer")
+      |> PactBuilder.using_plugin("csv")
+      |> PactBuilder.interaction("request for a CSV report", "", fn ib ->
+        ib
+        |> InteractionBuilder.request(fn rb ->
+          rb |> RequestBuilder.path("/reports/report001.csv")
+        end)
+        |> InteractionBuilder.response(fn rb ->
+          rb
+          |> ResponseBuilder.ok()
+          |> ResponseBuilder.contents(
+            "text/csv",
+            %{
+              "csvHeaders" => false,
+              "column:1" => "matching(type,'Name')",
+              "column:2" => "matching(number,100)",
+              "column:3" => "matching(datetime, 'yyyy-MM-dd','2000-01-01')"
+            }
+          )
+        end)
+      end)
+      |> PactBuilder.start_mock_server()
+
+    response = HTTPoison.get!(MockServer.path(service, "/reports/report001.csv"))
+
+    assert %HTTPoison.Response{status_code: 200, body: "Name,100,2000-01-01\n"} = response
   end
 end

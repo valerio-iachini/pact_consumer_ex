@@ -20,7 +20,7 @@ defmodule Pact.Native.Builders.RequestBuilder do
       end
 
       @spec request_builder_default() :: RequestBuilder.t()
-      def request_builder_default(), do: :erlang.nif_error(:nif_not_loaded)
+      def request_builder_default, do: :erlang.nif_error(:nif_not_loaded)
 
       @spec request_builder_method(buider :: RequestBuilder.t(), method :: String.t()) ::
               RequestBuilder.t()
@@ -117,6 +117,14 @@ defmodule Pact.Native.Builders.RequestBuilder do
               content_type :: String.t()
             ) :: RequestBuilder.t()
       def request_builder_body_matching2(_builder, _body, _content_type),
+        do: :erlang.nif_error(:nif_not_loaded)
+
+      @spec request_builder_contents(
+              builder :: RequestBuilder.t(),
+              content_type :: String.t(),
+              definition :: String.t()
+            ) :: RequestBuilder.t()
+      def request_builder_contents(_builder, _content_type, _definition),
         do: :erlang.nif_error(:nif_not_loaded)
 
       @spec request_builder_build(buider :: RequestBuilder.t()) :: Request.t()

@@ -1,6 +1,7 @@
 use pact_consumer::prelude::PactBuilderAsync;
 use rustler::{NifResult, NifStruct, Resource, ResourceArc};
 use std::sync::Mutex;
+use tokio::runtime::Runtime;
 
 use crate::models::{
     interaction::NifInteraction,
@@ -48,6 +49,22 @@ impl NifPactBuilder {
             .map_err(|_e| rustler::Error::RaiseAtom("invalid_pact_builder_reference"))?;
 
         fun(&mut inner)
+    }
+
+    pub fn invoke_async<F, T>(&self, fun: F) -> NifResult<T>
+    where
+        F: AsyncFnOnce(&mut PactBuilderAsync) -> NifResult<T>,
+    {
+        let rt = Runtime::new().unwrap();
+        rt.block_on(async {
+            let mut inner = self
+                .inner
+                .0
+                .lock()
+                .map_err(|_e| rustler::Error::RaiseAtom("invalid_pact_builder_reference"))?;
+
+            fun(&mut inner).await
+        })
     }
 }
 
@@ -98,9 +115,10 @@ fn using_plugin(
     name: String,
     version: Option<String>,
 ) -> NifResult<NifPactBuilder> {
-    builder.invoke(|b| {
-        futures::executor::block_on(b.using_plugin(&name, version));
+    builder.invoke_async(async move |b| {
+        b.using_plugin(&name, version).await;
         Ok(())
     })?;
+
     Ok(builder)
 }

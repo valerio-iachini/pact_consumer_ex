@@ -157,6 +157,17 @@ defmodule Pact.Builders.RequestBuilder do
     do: Native.request_builder_body_matching2(builder, body, content_type)
 
   @doc """
+  Set the request body using the JSON data. If the body is being supplied by a plugin, this is what is sent to the plugin to setup the body.
+  """
+  @spec contents(
+          builder :: Native.RequestBuilder.t(),
+          content_type :: String.t(),
+          definition :: term()
+        ) :: Native.RequestBuilder.t()
+  def contents(builder, content_type, definition),
+    do: Native.request_builder_contents(builder, content_type, Jason.encode!(definition))
+
+  @doc """
   Build the specified `Request` object.
   """
   @spec build(buider :: Native.RequestBuilder.t()) :: Native.Request.t()

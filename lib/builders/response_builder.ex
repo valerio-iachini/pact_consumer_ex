@@ -144,6 +144,18 @@ defmodule Pact.Builders.ResponseBuilder do
     do: Native.response_builder_body_matching2(builder, body, content_type)
 
   @doc """
+  Set the body using the definition. If the body is being supplied by a plugin, this is what is sent to the plugin to setup the body.
+  """
+  @spec contents(
+          builder :: Native.ResponseBuilder.t(),
+          content_type :: String.t(),
+          definition :: term()
+        ) ::
+          Native.ResponseBuilder.t()
+  def contents(builder, content_type, definition),
+    do: Native.response_builder_contents(builder, content_type, Jason.encode!(definition))
+
+  @doc """
   Build the specified `Response` object.
   """
   @spec build(buider :: Native.ResponseBuilder.t()) :: Native.Response.t()

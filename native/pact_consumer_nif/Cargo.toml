@@ -16,3 +16,4 @@ futures.workspace = true
 log.workspace = true
 env_logger.workspace = true
 regex.workspace = true
+tokio.workspace = true

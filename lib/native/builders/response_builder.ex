@@ -104,6 +104,14 @@ defmodule Pact.Native.Builders.ResponseBuilder do
       def response_builder_body_matching2(_builder, _body, _content_type),
         do: :erlang.nif_error(:nif_not_loaded)
 
+      @spec response_builder_contents(
+              builder :: ResponseBuilder.t(),
+              content_type :: String.t(),
+              definition :: String.t()
+            ) :: ResponseBuilder.t()
+      def response_builder_contents(_builder, _content_type, _definition),
+        do: :erlang.nif_error(:nif_not_loaded)
+
       @spec response_builder_build(buider :: ResponseBuilder.t()) :: Response.t()
       def response_builder_build(_builder), do: :erlang.nif_error(:nif_not_loaded)
 

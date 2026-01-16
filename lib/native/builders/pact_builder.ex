@@ -1,8 +1,8 @@
 defmodule Pact.Native.Builders.PactBuilder do
   @moduledoc false
 
-  alias Pact.Native.PactConsumer.Interaction
   alias Pact.Native.PactConsumer.AsynchronousMessage
+  alias Pact.Native.PactConsumer.Interaction
 
   defmacro __using__(_opts) do
     quote do

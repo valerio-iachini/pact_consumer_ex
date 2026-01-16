@@ -20,7 +20,7 @@ defmodule Pact.Native.Builders.ResponseBuilder do
       end
 
       @spec response_builder_default() :: ResponseBuilder.t()
-      def response_builder_default(), do: :erlang.nif_error(:nif_not_loaded)
+      def response_builder_default, do: :erlang.nif_error(:nif_not_loaded)
 
       @spec response_builder_status(buider :: ResponseBuilder.t(), status :: pos_integer()) ::
               ResponseBuilder.t()

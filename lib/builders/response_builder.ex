@@ -6,7 +6,7 @@ defmodule Pact.Builders.ResponseBuilder do
   alias Pact.Patterns
 
   @spec default() :: Native.ResponseBuilder.t()
-  def default(), do: Native.response_builder_default()
+  def default, do: Native.response_builder_default()
 
   @doc """
   Set the status code for the response. Defaults to `200`.

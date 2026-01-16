@@ -20,7 +20,7 @@ defmodule Pact.Native.Builders.RequestBuilder do
       end
 
       @spec request_builder_default() :: RequestBuilder.t()
-      def request_builder_default(), do: :erlang.nif_error(:nif_not_loaded)
+      def request_builder_default, do: :erlang.nif_error(:nif_not_loaded)
 
       @spec request_builder_method(buider :: RequestBuilder.t(), method :: String.t()) ::
               RequestBuilder.t()

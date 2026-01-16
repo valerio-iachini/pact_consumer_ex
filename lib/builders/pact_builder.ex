@@ -2,10 +2,10 @@ defmodule Pact.Builders.PactBuilder do
   @moduledoc """
   Builder for `Pact` objects.
   """
-  alias Pact.Native.PactConsumer, as: Native
   alias Pact.Builders.InteractionBuilder
   alias Pact.Builders.MessageBuilder
   alias Pact.MockServer
+  alias Pact.Native.PactConsumer, as: Native
 
   @doc """
   Create a new `PactBuilder`, specifying the names of the service

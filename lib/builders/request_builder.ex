@@ -9,7 +9,7 @@ defmodule Pact.Builders.RequestBuilder do
   Creates and returns a new request builder with default settings.
   """
   @spec default() :: Native.RequestBuilder.t()
-  def default(), do: Native.request_builder_default()
+  def default, do: Native.request_builder_default()
 
   @doc """
   Specify the request method. Defaults to `"GET"`.

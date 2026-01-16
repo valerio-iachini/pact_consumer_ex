@@ -45,16 +45,13 @@ impl NifResponseBuilder {
     where
         F: AsyncFnOnce(&mut ResponseBuilder) -> NifResult<T>,
     {
+        let mut inner = self
+            .inner
+            .0
+            .lock()
+            .map_err(|_e| rustler::Error::RaiseAtom("invalid_pact_builder_reference"))?;
         let rt = Runtime::new().unwrap();
-        rt.block_on(async {
-            let mut inner = self
-                .inner
-                .0
-                .lock()
-                .map_err(|_e| rustler::Error::RaiseAtom("invalid_pact_builder_reference"))?;
-
-            fun(&mut inner).await
-        })
+        rt.block_on(async { fun(&mut inner).await })
     }
 }
 

@@ -20,18 +20,18 @@ pub struct PactBuilderResource(Mutex<PactBuilderAsync>);
 impl NifPactBuilder {
     fn new(consumer: String, provider: String) -> Self {
         Self {
-            inner: ResourceArc::new(PactBuilderResource(Mutex::new(
-                PactBuilderAsync::new(consumer, provider).into(),
-            ))),
+            inner: ResourceArc::new(PactBuilderResource(Mutex::new(PactBuilderAsync::new(
+                consumer, provider,
+            )))),
             is_v4: false,
         }
     }
 
     fn new_v4(consumer: String, provider: String) -> Self {
         Self {
-            inner: ResourceArc::new(PactBuilderResource(Mutex::new(
-                PactBuilderAsync::new_v4(consumer, provider).into(),
-            ))),
+            inner: ResourceArc::new(PactBuilderResource(Mutex::new(PactBuilderAsync::new_v4(
+                consumer, provider,
+            )))),
             is_v4: true,
         }
     }
@@ -55,16 +55,14 @@ impl NifPactBuilder {
     where
         F: AsyncFnOnce(&mut PactBuilderAsync) -> NifResult<T>,
     {
-        let rt = Runtime::new().unwrap();
-        rt.block_on(async {
-            let mut inner = self
-                .inner
-                .0
-                .lock()
-                .map_err(|_e| rustler::Error::RaiseAtom("invalid_pact_builder_reference"))?;
+        let mut inner = self
+            .inner
+            .0
+            .lock()
+            .map_err(|_e| rustler::Error::RaiseAtom("invalid_pact_builder_reference"))?;
 
-            fun(&mut inner).await
-        })
+        let rt = Runtime::new().unwrap();
+        rt.block_on(async { fun(&mut inner).await })
     }
 }
 

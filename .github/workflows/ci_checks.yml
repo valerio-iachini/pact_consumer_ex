@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MIX_ENV: test
+      PACT_CONSUMER_EX_FORCE_BUILD: true
     steps:
       - uses: actions/checkout@v6
       - name: Setup Elixir

@@ -22,6 +22,7 @@ defmodule PactElixir.MixProject do
       files: [
         "lib",
         "native",
+        ".cargo",
         "Cargo.toml",
         "Cargo.lock",
         "mix.exs",

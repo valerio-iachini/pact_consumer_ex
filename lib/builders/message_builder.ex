@@ -60,6 +60,23 @@ defmodule Pact.Builders.MessageBuilder do
   def test_name(builder, name), do: Native.message_builder_test_name(builder, name)
 
   @doc """
+  Specify the message payload and content type
+  """
+  @spec body(
+          builder :: Native.MessageInteractionBuilder.t(),
+          body :: binary() | list(byte()),
+          content_type :: String.t() | nil
+        ) ::
+          Native.MessageInteractionBuilder.t()
+  def body(builder, body, content_type \\ nil)
+
+  def body(builder, body, content_type) when is_binary(body),
+    do: Native.message_builder_body(builder, :binary.bin_to_list(body), content_type)
+
+  def body(builder, body, content_type),
+    do: Native.message_builder_body(builder, body, content_type)
+
+  @doc """
   Specify the body as `JsonPattern`, possibly including special matching
   rules.
   """

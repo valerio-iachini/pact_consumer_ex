@@ -1,3 +1,4 @@
+use bytes::Bytes;
 use pact_consumer::builders::MessageInteractionBuilder;
 use rustler::{NifResult, NifStruct, Resource, ResourceArc};
 use std::sync::Mutex;
@@ -53,6 +54,20 @@ pub fn given_with_params(
             .map_err(|_e| rustler::Error::RaiseAtom("invalid_params"))?;
 
         b.given_with_params(given, &params);
+        Ok(())
+    })?;
+
+    Ok(builder)
+}
+
+#[rustler::nif(name = "message_builder_body")]
+pub fn body(
+    builder: NifMessageInteractionBuilder,
+    bytes: Vec<u8>,
+    content_type: Option<String>,
+) -> NifResult<NifMessageInteractionBuilder> {
+    builder.invoke(|b| {
+        b.body(Bytes::from_owner(bytes), content_type);
         Ok(())
     })?;
 

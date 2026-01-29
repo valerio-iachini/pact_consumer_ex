@@ -18,19 +18,19 @@ defmodule Pact.Patterns do
           | json_matcher()
 
   @type json_matcher ::
-          {:datetime, String.t(), String.t()}
+          {:matching_regex, %{regex: String.t(), example: String.t()}}
           | {:like, json_pattern()}
-          | {:each_like, json_pattern(), non_neg_integer()}
-          | {:matching_regex, String.t(), String.t()}
+          | {:each_like, %{json_pattern: json_pattern(), min_len: non_neg_integer()}}
+          | {:date_time, %{format: String.t(), example: String.t()}}
 
   @type string_pattern ::
           binary()
           | string_matcher()
 
   @type string_matcher ::
-          {:datetime, String.t(), String.t()}
+          {:matching_regex, %{regex: String.t(), example: String.t()}}
           | {:like, string_pattern()}
-          | {:matching_regex, String.t(), String.t()}
+          | {:date_time, %{format: String.t(), example: String.t()}}
 
   @doc """
   Creates a datetime matcher for both JSON and string patterns.
@@ -38,10 +38,10 @@ defmodule Pact.Patterns do
   ## Examples
 
       iex> Pact.Patterns.datetime("yyyy-MM-dd", "2000-01-01")
-      {:datetime, "yyyy-MM-dd", "2000-01-01"}
+      {:date_time, %{format: "yyyy-MM-dd", example: "2000-01-01"}}
   """
   @spec datetime(String.t(), String.t()) :: json_matcher() | string_matcher()
-  def datetime(format, example), do: {:datetime, format, example}
+  def datetime(format, example), do: {:date_time, %{format: format, example: example}}
 
   @doc """
   Creates a like matcher for JSON patterns. When used in string patterns, the inner
@@ -60,23 +60,23 @@ defmodule Pact.Patterns do
 
   ## Parameters
     - pattern: The example pattern for array elements
-    - min_length: Minimum required array length (default: 1, must be ≥ 0)
+    - min_len: Minimum required array length (default: 1, must be ≥ 0)
 
   ## Examples
       # With default minimum length
       iex> Pact.Patterns.each_like("item")
-      {:each_like, "item", 1}
+      {:each_like, %{json_pattern: "item", min_len: 1}}
 
       # With explicit minimum length
       iex> Pact.Patterns.each_like("item", 3)
-      {:each_like, "item", 3}
+      {:each_like, %{json_pattern: "item", min_len: 3}}
   """
   @spec each_like(json_pattern()) :: json_matcher()
   @spec each_like(json_pattern(), non_neg_integer()) :: json_matcher()
-  def each_like(pattern, min_length \\ 1)
+  def each_like(pattern, min_len \\ 1)
 
-  def each_like(pattern, min_length) when is_integer(min_length) and min_length >= 0,
-    do: {:each_like, pattern, min_length}
+  def each_like(pattern, min_len) when is_integer(min_len) and min_len >= 0,
+    do: {:each_like, %{json_pattern: pattern, min_len: min_len}}
 
   @doc """
   Creates a regex matcher (alias for matching_regex/2).
@@ -84,10 +84,10 @@ defmodule Pact.Patterns do
   ## Examples
 
       iex> Pact.Patterns.term("^\\d+$", "123")
-      {:matching_regex, "^\\d+$", "123"}
+      {:matching_regex, %{regex: "^\\d+$", example: "123"}}
   """
   @spec term(String.t(), String.t()) :: json_matcher() | string_matcher()
-  def term(regex, example), do: {:matching_regex, regex, example}
+  def term(regex, example), do: {:matching_regex, %{regex: regex, example: example}}
 
   @doc """
   Creates a regex matcher for both JSON and string patterns.
@@ -95,10 +95,11 @@ defmodule Pact.Patterns do
   ## Examples
 
       iex> Pact.Patterns.matching_regex("^\\d+$", "123")
-      {:matching_regex, "^\\d+$", "123"}
+      {:matching_regex, %{regex: "^\\d+$", example: "123"}}
   """
   @spec matching_regex(String.t(), String.t()) :: json_matcher() | string_matcher()
-  def matching_regex(regex, example), do: {:matching_regex, regex, example}
+  def matching_regex(regex, example),
+    do: {:matching_regex, %{regex: regex, example: example}}
 
   @doc """
   Builds a JSON pattern structure.

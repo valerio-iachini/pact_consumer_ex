@@ -57,6 +57,15 @@ defmodule Pact.Native.Builders.MessageBuilder do
               MessageInteractionBuilder.t()
       def message_builder_test_name(_builder, _name), do: :erlang.nif_error(:nif_not_loaded)
 
+      @spec message_builder_body(
+              builder :: MessageInteractionBuilder.t(),
+              body :: list(byte()),
+              content_type :: String.t() | nil
+            ) ::
+              MessageInteractionBuilder.t()
+      def message_builder_body(_builder, _body, _content_type),
+        do: :erlang.nif_error(:nif_not_loaded)
+
       @spec message_builder_json_body(
               builder :: MessageInteractionBuilder.t(),
               body :: Patterns.json_pattern()

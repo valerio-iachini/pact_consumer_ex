@@ -1911,6 +1911,7 @@ dependencies = [
 name = "pact_consumer_nif"
 version = "0.1.0"
 dependencies = [
+ "bytes",
  "env_logger",
  "futures",
  "log",

@@ -16,10 +16,19 @@ pub enum NifJsonPattern {
 
 #[derive(NifTaggedEnum)]
 pub enum NifJsonMatcher {
-    MatchingRegex(String, String),
+    MatchingRegex {
+        regex: String,
+        example: String,
+    },
     Like(Box<NifJsonPattern>),
-    EachLike(Box<NifJsonPattern>, usize),
-    DateTime(String, String),
+    EachLike {
+        json_pattern: Box<NifJsonPattern>,
+        min_len: usize,
+    },
+    DateTime {
+        format: String,
+        example: String,
+    },
 }
 
 impl From<NifJsonPattern> for JsonPattern {
@@ -47,18 +56,19 @@ impl From<NifJsonPattern> for JsonPattern {
 impl From<NifJsonMatcher> for JsonPattern {
     fn from(value: NifJsonMatcher) -> Self {
         match value {
-            NifJsonMatcher::MatchingRegex(regex, example) => {
+            NifJsonMatcher::MatchingRegex { regex, example } => {
                 Term::<JsonPattern>::new(Regex::new(&regex).expect("valid regex"), example).into()
             }
             NifJsonMatcher::Like(json_pattern) => {
                 Like::<JsonPattern>::new::<JsonPattern>((*json_pattern).into()).into()
             }
-            NifJsonMatcher::EachLike(json_pattern, min_len) => {
-                EachLike::new((*json_pattern).into())
-                    .with_min_len(min_len)
-                    .into()
-            }
-            NifJsonMatcher::DateTime(format, example) => {
+            NifJsonMatcher::EachLike {
+                json_pattern,
+                min_len,
+            } => EachLike::new((*json_pattern).into())
+                .with_min_len(min_len)
+                .into(),
+            NifJsonMatcher::DateTime { format, example } => {
                 DateTime::<JsonPattern>::new(format, example).into()
             }
         }
@@ -75,9 +85,9 @@ pub enum NifStringPattern {
 
 #[derive(NifTaggedEnum)]
 pub enum NifStringMatcher {
-    MatchingRegex(String, String),
+    MatchingRegex { regex: String, example: String },
     Like(Box<NifStringPattern>),
-    DateTime(String, String),
+    DateTime { format: String, example: String },
 }
 
 impl From<NifStringPattern> for StringPattern {
@@ -92,13 +102,13 @@ impl From<NifStringPattern> for StringPattern {
 impl From<NifStringMatcher> for StringPattern {
     fn from(value: NifStringMatcher) -> Self {
         match value {
-            NifStringMatcher::MatchingRegex(regex, example) => {
+            NifStringMatcher::MatchingRegex { regex, example } => {
                 Term::<StringPattern>::new(Regex::new(&regex).expect("valid regex"), example).into()
             }
             NifStringMatcher::Like(pattern) => {
                 Like::<StringPattern>::new::<StringPattern>((*pattern).into()).into()
             }
-            NifStringMatcher::DateTime(format, example) => {
+            NifStringMatcher::DateTime { format, example } => {
                 DateTime::<StringPattern>::new(format, example).into()
             }
         }

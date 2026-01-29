@@ -98,8 +98,7 @@ defmodule Pact.Patterns do
       {:matching_regex, %{regex: "^\\d+$", example: "123"}}
   """
   @spec matching_regex(String.t(), String.t()) :: json_matcher() | string_matcher()
-  def matching_regex(regex, example),
-    do: {:matching_regex, %{regex: regex, example: example}}
+  def matching_regex(regex, example), do: {:matching_regex, %{regex: regex, example: example}}
 
   @doc """
   Builds a JSON pattern structure.

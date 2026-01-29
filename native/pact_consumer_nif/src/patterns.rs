@@ -1,7 +1,43 @@
 use pact_consumer::prelude::{DateTime, EachLike, JsonPattern, Like, StringPattern, Term};
 use regex::Regex;
-use rustler::{Atom, NifTaggedEnum, NifUntaggedEnum};
+use rustler::{Atom, Decoder, Encoder, NifTaggedEnum, NifUntaggedEnum};
 use std::collections::HashMap;
+
+mod atoms {
+    rustler::atoms! {
+        invalid_json_object_key
+    }
+}
+
+#[derive(PartialEq, Eq, Hash)]
+pub struct JsonObjectKey(String);
+
+impl<'a> Decoder<'a> for JsonObjectKey {
+    fn decode(term: rustler::Term<'a>) -> rustler::NifResult<Self> {
+        if term.is_atom() {
+            Ok(JsonObjectKey(term.atom_to_string()?))
+        } else if term.is_binary() {
+            match String::from_utf8(term.decode_as_binary()?.as_slice().to_vec()) {
+                Ok(s) => Ok(JsonObjectKey(s)),
+                Err(e) => Err(rustler::Error::Term(Box::new((
+                    atoms::invalid_json_object_key(),
+                    format!("Invalid UTF-8 in binary: {}", e),
+                )))),
+            }
+        } else {
+            Err(rustler::Error::Term(Box::new((
+                atoms::invalid_json_object_key(),
+                "Term is neither atom nor binary".to_string(),
+            ))))
+        }
+    }
+}
+
+impl Encoder for JsonObjectKey {
+    fn encode<'a>(&self, env: rustler::Env<'a>) -> rustler::Term<'a> {
+        rustler::Encoder::encode(&self, env)
+    }
+}
 
 #[derive(NifUntaggedEnum)]
 pub enum NifJsonPattern {
@@ -10,7 +46,7 @@ pub enum NifJsonPattern {
     Bool(bool),
     Array(Vec<NifJsonPattern>),
     Null(Atom),
-    Object(HashMap<String, NifJsonPattern>),
+    Object(HashMap<JsonObjectKey, NifJsonPattern>),
     Matcher(NifJsonMatcher),
 }
 
@@ -44,7 +80,7 @@ impl From<NifJsonPattern> for JsonPattern {
                 .into(),
             NifJsonPattern::Object(object) => object
                 .into_iter()
-                .map(|(k, v)| (k, v.into()))
+                .map(|(k, v)| (k.0, v.into()))
                 .collect::<HashMap<String, JsonPattern>>()
                 .into(),
             NifJsonPattern::Matcher(matcher) => matcher.into(),

@@ -35,7 +35,7 @@ defmodule PactConsumerEx.MixProject do
 
   defp deps do
     [
-      {:rustler, "~> 0.37.1", optional: true},
+      {:rustler, "~> 0.38.0", optional: true},
       {:rustler_precompiled, "~> 0.9.0"},
       {:jason, "~> 1.4.4"},
       {:httpoison, "~> 2.3.0", only: [:test]},

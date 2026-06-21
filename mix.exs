@@ -38,7 +38,7 @@ defmodule PactConsumerEx.MixProject do
       {:rustler, "~> 0.38.0", optional: true},
       {:rustler_precompiled, "~> 0.9.0"},
       {:jason, "~> 1.4.4"},
-      {:httpoison, "~> 2.3.0", only: [:test]},
+      {:httpoison, "~> 3.0.0", only: [:test]},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}

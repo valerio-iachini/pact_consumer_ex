@@ -9,7 +9,7 @@ Add to your `mix.exs` dependencies:
 ```elixir
 def deps do
   [
-    {:pact_consumer_ex, "~> 0.3.0", only: [:test]}
+    {:pact_consumer_ex, "~> 0.4.3", only: [:test]}
   ]
 end
 ```

@@ -33,7 +33,7 @@ jobs:
         uses: erlef/setup-beam@v1
         with:
           elixir-version: 1.16
-          otp-version: 25
+          otp-version: 26
       - name: Install pact-plugin-cli
         run: |
           curl -fsSL https://raw.githubusercontent.com/pact-foundation/pact-plugins/main/scripts/install-plugin-cli.sh | bash
